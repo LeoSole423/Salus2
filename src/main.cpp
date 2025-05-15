@@ -78,16 +78,19 @@ void setup() {
 // ******************* loop() *******************
 void loop() {
 
+  ch1Value = readChannel(CH1, -100, 100, 0);
 
-  generatePWM(sma_ch3);
-  change_MaxVel(sma_ch2, new_MaxVel, maxvel_funcition_aux);
-  Quad_Reverse(sma_ch6);
-  Front_Brakes(sma_ch2);
-  Back_Brakes(sma_ch2);
+  ch3Value = readChannel(CH3, -100, 100, -100);
+
+  generatePWM(ch3Value);
+  //change_MaxVel(sma_ch2, new_MaxVel, maxvel_funcition_aux);
+  //Quad_Reverse(sma_ch6);
+  //Front_Brakes(sma_ch2);
+  //Back_Brakes(sma_ch2);
 
   // Control PID para el giro
   anglePot = analogRead(AnglePot);
-  Setpoint1 = map(sma_ch1, -100, 100, 30, 170);
+  Setpoint1 = map(ch1Value, -100, 100, 30, 170);
   Input1 = map(anglePot, 0, 1023, 0, 270);
   PID1.Compute();
 
