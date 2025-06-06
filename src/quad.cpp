@@ -73,15 +73,32 @@ void Back_Brakes(int ch2value){
 // Acelerador Quad
 // Función para generar un pulso PWM
 void generatePWM(int ch3value) {
-  // Mapeamos el valor de ch3value (-100 a 100) a (0 a 255)
-  int pwmValue = map(ch3value, -101, 75, 0, 255);
+  static bool reverseState = false; // Solo visible dentro de la función, pero persiste
+  int pwmValue = 40;
+  const int pwmMin = 40;
+  const int pwmMax = 150;
+  const int deadZone = 10;
+  bool newReverseState = reverseState;
 
-  // Limitamos el valor mapeado entre 0 y 255
-  pwmValue = constrain(pwmValue, 40, 150);
-  //Serial.print("PWM value:");
-  //Serial.print(pwmValue);
+  if (ch3value > deadZone) {
+    newReverseState = true;
+    pwmValue = map(ch3value, deadZone, 100, pwmMin, pwmMax);
+  }
+  else if (ch3value < -deadZone) {
+    newReverseState = false;
+    pwmValue = map(-ch3value, deadZone, 100, pwmMin, pwmMax);
+  }
+  else
+  {
+    newReverseState = true;
+  }
 
-  // Escribimos el valor PWM en el pin
+  if (newReverseState != reverseState) {
+    digitalWrite(PIN_REVERSE, newReverseState ? HIGH : LOW);
+    reverseState = newReverseState;
+    delay(1000);
+  }
+
   analogWrite(ACCEL_PWM, pwmValue);
 }
 
