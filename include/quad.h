@@ -8,8 +8,8 @@
 
 
 //Digital Pins
-#define PIN_MAX_VEL 45 //22
-#define PIN_REVERSE 47 //23
+#define PIN_MAX_VEL 47 //22
+#define PIN_REVERSE 45 //23
 #define PIN_QUAD_ON 49 //24
 
 //PWM Pins

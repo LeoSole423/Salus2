@@ -78,9 +78,9 @@ void setup() {
 // ******************* loop() *******************
 void loop() {
 
-  ch1Value = readChannel(CH1, -100, 100, 0);
+  ch1Value = readChannel(CH1, -85, 85, 0);
 
-  ch3Value = readChannel(CH3, -100, 100, -100);
+  ch3Value = readChannel(CH3, -100, 100, 0);
 
   generatePWM(ch3Value);
   //change_MaxVel(sma_ch2, new_MaxVel, maxvel_funcition_aux);
@@ -114,9 +114,9 @@ void checkSteeringStatus() {
   SteeringState = (abs(mA) > STEERING_THRESHOLD) ? BLOQ : READY;
   
   // Giro centrado
-  if (abs(Output1) < 10 && Quad_ON(sma_ch5) == true) {
+  if (abs(Output1) < 10) {
     digitalWrite(enaRPWM, LOW);
-  } else if (abs(Output1) > 10 && Quad_ON(sma_ch5)) {
+  } else if (abs(Output1) > 10) {
     digitalWrite(enaRPWM, HIGH);
   }
 }
@@ -142,16 +142,12 @@ void SteeringBloqLogic() {
 void printInfo() {
   String info = "";
   info += " | Current: " + String(mA);
-  info += " | Angulo: " + String(angle);
+  info += " | Angulo: " + String(Input1);
   info += "\nDatos Giro: \n";
   info += " | PID Output: " + String(Output1);
   info += " | EstadoGiro: " + String(SteeringState);
   info += "\nReceptor: \n";
-  info += " | Ch1: " + String(sma_ch1);
-  info += " | Ch2: " + String(sma_ch2);
-  info += " | Ch3: " + String(sma_ch3);
-  info += " | Ch4: " + String(sma_ch4);
-  info += " | Ch5: " + String(sma_ch5);
-  info += " | Ch6: " + String(sma_ch6);
+  info += " | Ch1: " + String(ch1Value);
+  info += " | Ch3: " + String(ch3Value);
   Serial.println(info);
 }
